@@ -3,57 +3,57 @@ networks:
   app-network:
     driver: bridge
 services:
-    webserver:
-        image: 'nginx:latest'
-        container_name: webserver
-        tty: true
-        working_dir: /var/www/sandbox
-        volumes:
-          - './project:/var/www/html'
-          - './docker/nginx/hosts.conf:/etc/nginx/conf.d/hosts.conf'
-        ports:
-          - '8000:8000'
-        depends_on:
-          - box
-          - mariadb
-        networks:
-          - app-network
-    box:
-        container_name: box
-        build:
-            context: ./docker/php_8.0
-            dockerfile: Dockerfile                    
-        working_dir: /var/www/html
-        volumes:
-            - './project:/var/www/html'
-            - './docker/php_8.0/local.ini:/usr/local/etc/php/conf.d/local.ini'
-        depends_on:
-            - mariadb
-        networks: 
-            - app-network
-        ports:
-          - '6001:6001'
-        expose:
-         - "6001"          
-    mariadb:
-        container_name: mariadb
-        build:
-          context: ./docker/mariadb
-          dockerfile: Dockerfile
-        restart: always
-        ports:
-          - '3306:3306'
-        volumes:
-            - "mariadb-data:/var/lib/mariadb"
-        environment:
-            MARIADB_DATABASE : project
-            MARIADB_ROOT_PASSWORD : secret
-            MARIADB_USER : user
-            MARIADB_PASSWORD: secret
-        networks: 
-            - app-network
+  webserver:
+    image: 'nginx:latest'
+    container_name: webserver
+    tty: true
+    working_dir: /var/www/sandbox
+    volumes:
+      - './project:/var/www/html'
+      - './docker/nginx/hosts.conf:/etc/nginx/conf.d/hosts.conf'
+    ports:
+      - '8000:8000'
+    depends_on:
+      - box
+      - mariadb
+    networks:
+      - app-network
+  box:
+    container_name: box
+    build:
+      context: ./docker/php_8.0
+      dockerfile: Dockerfile
+    working_dir: /var/www/html
+    volumes:
+      - './project:/var/www/html'
+      - './docker/php_8.0/local.ini:/usr/local/etc/php/conf.d/local.ini'
+    depends_on:
+      - mariadb
+    networks:
+      - app-network
+    ports:
+      - '6001:6001'
+    expose:
+      - "6001"
+  mariadb:
+    container_name: mariadb
+    build:
+      context: ./docker/mariadb
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - '3306:3306'
+    volumes:
+      - 'mari-db:/var/lib/mysql'
+    environment:
+      MARIADB_DATABASE : project
+      MARIADB_ROOT_PASSWORD : secret
+      MARIADB_USER : user
+      MARIADB_PASSWORD: secret
+    networks:
+      - app-network
 volumes:
-  mariadb-data: null
+  mari-db: null
   
 
             

@@ -1,5 +1,5 @@
 
-## MapOn task
+## Mapon task
 
 ## Task Description
 1. Created simple authorization process (email and password authorization)
